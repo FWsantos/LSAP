@@ -1,10 +1,11 @@
 # Build Script
 import os
 # os.system('cls') #windows
-os.system('clear') #linux
+# os.system('clear') #linux
 
 # Compila
 command = "g++ "
+# command += "-I $PWD/ "  
 command += "-std=c++2a "
 command += "-c "
 command += "-Wall "
@@ -15,7 +16,7 @@ erro = os.system(command)
 
 # Linka
 if erro == 0:
-	command = "g++ "
+	command = "g++ "  
 	command += "-o "
 	command += "LSAP.exe "
 	command += "LSAP.o "
