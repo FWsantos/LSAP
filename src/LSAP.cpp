@@ -30,7 +30,8 @@ void LSAP::column_reduction(matrix C, std::vector<int> u, std::vector<int> &v, i
     }
 }
 
-void LSAP::basic_preprocessing(matrix C, matrix &X, std::vector<int> &row, int n) {
+void LSAP::procedure_basic_preprocessing(matrix C, int n, std::vector<int> &row) {
+    matrix X(n, std::vector<int>(n, 0));
     std::vector<int> u(n, 0);
     std::vector<int> v(n, 0);
     
@@ -49,15 +50,15 @@ void LSAP::basic_preprocessing(matrix C, matrix &X, std::vector<int> &row, int n
     }
 }
 
-void procedure_alternate(
+void LSAP::procedure_alternate(
     matrix C,
     std::set<int> V,
     std::vector<int> u,
     std::vector<int> v,
     std::vector<int> row,
-    int &sink,
     int k,
-    int n
+    int n,
+    int &sink
 ) {
     std::set<int> SU, LV, SV, V_dif_LV, LV_dif_SV;
     std::vector<int> pred;
@@ -95,4 +96,24 @@ void procedure_alternate(
     }
 }
 
+void LSAP::generate_phi(std::vector<int> row, std::vector<int> &phi){
+    
+}
 
+
+void LSAP::hungarian_n4(std::set<int> U, int n){
+    std::vector<int> u(n, 0);
+    std::vector<int> v(n, 0);
+    std::vector<int> row(n, 0);
+    std::vector<int> phi(n, 0);
+    std::set<int> U_;
+    std::set<int> U_dif_U_;
+    int sink;
+
+    while (U_.size() < n){
+        U_dif_U_.clear();
+        std::set_difference(U.begin(), U.end(), U_.begin(), U_.end(), std::inserter(U_dif_U_, U_dif_U_.begin()));
+                
+    }
+    
+}

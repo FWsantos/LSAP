@@ -7,11 +7,10 @@ typedef std::vector<std::vector<int>> matrix;
 class LSAP {
 public:
     static void printTeste();
-    static void basic_preprocessing(
+    static void procedure_basic_preprocessing(
         matrix C,
-        matrix &X,
-        std::vector<int> &row,
-        int n
+        int n,
+        std::vector<int> &row
     );
     static void procedure_alternate(
         matrix C,
@@ -19,10 +18,14 @@ public:
         std::vector<int> u,
         std::vector<int> v,
         std::vector<int> row,
-        int &sink,
         int k,
-        int n
+        int n,
+        int &sink
     );
+    static void generate_phi(std::vector<int> row, std::vector<int> &phi);
+
+    /* Basic O(n^4) Hungarian algorithm. */
+    static void hungarian_n4(std::set<int> U, int n);
 
 private:
     static void row_reduction(
