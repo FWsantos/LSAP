@@ -14,10 +14,15 @@ enable_testing()
 
 set(headers
     include/LSAP.h
+    include/Utils.h
+    include/Tests.h
+    include/Types.h
     )
 
 set(sources
     src/LSAP.cpp
+    src/Utils.cpp
+    src/Tests.cpp
     )
 
 add_executable(LSAP ${headers} ${sources} main.cpp)

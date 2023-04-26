@@ -1,12 +1,12 @@
+#include "../include/LSAP.h"
 #include <algorithm>
 #include <iostream>
-#include "../include/LSAP.h"
 
 void LSAP::printTeste() {
     std::cout << "PrintTeste" << std::endl;
 }
 
-void LSAP::row_reduction(matrix C, std::vector<int> &u, int n) {
+void LSAP::row_reduction(matrix<int> C, std::vector<int> &u, int n) {
     for (int i = 0; i < n; ++i) {
         u[i] = C[i][0];
         for (int j = 0; j < n; ++j) {
@@ -18,7 +18,7 @@ void LSAP::row_reduction(matrix C, std::vector<int> &u, int n) {
     }
 }
 
-void LSAP::column_reduction(matrix C, std::vector<int> u, std::vector<int> &v, int n) {
+void LSAP::column_reduction(matrix<int> C, std::vector<int> u, std::vector<int> &v, int n) {
     for (int j = 0; j < n; j++) {
         v[j] = C[0][j] - u[0];
         for (int i = 0; i < n; i++) {
@@ -30,8 +30,8 @@ void LSAP::column_reduction(matrix C, std::vector<int> u, std::vector<int> &v, i
     }
 }
 
-void LSAP::procedure_basic_preprocessing(matrix C, int n, std::vector<int> &row) {
-    matrix X(n, std::vector<int>(n, 0));
+void LSAP::procedure_basic_preprocessing(matrix<int> C, int n, std::vector<int> &row) {
+    matrix<int> X(n, std::vector<int>(n, 0));
     std::vector<int> u(n, 0);
     std::vector<int> v(n, 0);
     
@@ -51,7 +51,7 @@ void LSAP::procedure_basic_preprocessing(matrix C, int n, std::vector<int> &row)
 }
 
 void LSAP::procedure_alternate(
-    matrix C,
+    matrix<int> C,
     std::set<int> V,
     std::vector<int> u,
     std::vector<int> v,

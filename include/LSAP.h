@@ -1,19 +1,16 @@
+#include "Types.h"
 #include <set>
-#include <vector>
-
-/* Matrix type */
-typedef std::vector<std::vector<int>> matrix;
 
 class LSAP {
 public:
     static void printTeste();
     static void procedure_basic_preprocessing(
-        matrix C,
+        matrix<int> C,
         int n,
         std::vector<int> &row
     );
     static void procedure_alternate(
-        matrix C,
+        matrix<int> C,
         std::set<int> V,
         std::vector<int> u,
         std::vector<int> v,
@@ -29,12 +26,12 @@ public:
 
 private:
     static void row_reduction(
-        matrix C,
+        matrix<int> C,
         std::vector<int> &u,
         int n
     );
     static void column_reduction(
-        matrix C,
+        matrix<int> C,
         std::vector<int> u,
         std::vector<int> &v,
         int n
