@@ -4,14 +4,10 @@
 #include <iostream>
 
 void Tests::test_procedure_basic_preprocessing(){
-    int n = 4;
-    // Initialize cost matrix C
-    matrix<int> C = {
-        {7, 9, 8, 9},
-        {2, 8, 5, 7},
-        {1, 6, 6, 9},
-        {3, 6, 2, 2},
-    };
+    int n;
+    // Initialize cost matrix C and get n
+    matrix<int> C = Utils::read_file("../file_inputs/basic_test.txt", n);
+    
     // Initialize resulting vector row
     std::vector<int> row(n, 0);
 
@@ -34,9 +30,7 @@ void Tests::test_procedure_basic_preprocessing(){
 }
 
 void Tests::test_read_file(){
-    std::string file_path("../file_inputs/basic_test.txt");
-    matrix<int> C;
     int n;
-    Utils::read_file(file_path, C, n);
-    // std::cout << "n: " << n << std::endl;
+    matrix<int> C = Utils::read_file("../file_inputs/basic_test.txt", n);
+    std::cout << "n: " << n << std::endl;
 }

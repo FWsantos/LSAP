@@ -4,7 +4,7 @@
 #include <sstream>
 
 
-void Utils::read_file(std::string file_path, matrix<int> &C, int &n){
+matrix<int> Utils::read_file(std::string file_path, int &n){
     
     std::ifstream file(file_path);
     
@@ -13,9 +13,18 @@ void Utils::read_file(std::string file_path, matrix<int> &C, int &n){
     std::stringstream stream_value (line);
     stream_value >> value;
     n = std::stoi(value);
+
+    matrix<int> C;
     while (std::getline(file, line)){
-        std::cout << line << std::endl;
+        std::vector<int> v_line;
+        std::stringstream stream_line (line);
+
+        while (stream_line >> value)
+            v_line.push_back(std::stoi(value));
+        
+        C.push_back(v_line);
     }
-    
+
     file.close();
+    return C;
 }

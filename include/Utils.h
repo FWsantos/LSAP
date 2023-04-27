@@ -5,5 +5,5 @@ class Utils {
 private:
     /* data */
 public:
-    static void read_file(std::string file_path, matrix<int> &C, int &n);
+    static matrix<int> read_file(std::string file_path, int &n);
 };
