@@ -4,12 +4,12 @@
 class LSAP {
 public:
     static void printTeste();
-    static void procedure_basic_preprocessing(
+    static void basic_preprocessing(
         matrix<int> C,
         int n,
         std::vector<int> &row
     );
-    static void procedure_alternate(
+    static void alternate(
         matrix<int> C,
         std::set<int> V,
         std::vector<int> u,
@@ -22,7 +22,8 @@ public:
     static void generate_phi(std::vector<int> row, std::vector<int> &phi);
 
     /* Basic O(n^4) Hungarian algorithm. */
-    static void hungarian_n4(std::set<int> U, int n);
+    static void hungarian_n4(matrix<int> C,
+        std::set<int> V, std::set<int> U, int n);
 
 private:
     static void row_reduction(

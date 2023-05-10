@@ -30,7 +30,7 @@ void LSAP::column_reduction(matrix<int> C, std::vector<int> u, std::vector<int> 
     }
 }
 
-void LSAP::procedure_basic_preprocessing(matrix<int> C, int n, std::vector<int> &row) {
+void LSAP::basic_preprocessing(matrix<int> C, int n, std::vector<int> &row) {
     matrix<int> X(n, std::vector<int>(n, 0));
     std::vector<int> u(n, 0);
     std::vector<int> v(n, 0);
@@ -50,7 +50,7 @@ void LSAP::procedure_basic_preprocessing(matrix<int> C, int n, std::vector<int> 
     }
 }
 
-void LSAP::procedure_alternate(
+void LSAP::alternate(
     matrix<int> C,
     std::set<int> V,
     std::vector<int> u,
@@ -101,19 +101,67 @@ void LSAP::generate_phi(std::vector<int> row, std::vector<int> &phi){
 }
 
 
-void LSAP::hungarian_n4(std::set<int> U, int n){
+void LSAP::hungarian_n4(
+    matrix<int> C,
+    std::set<int> V,
+    std::set<int> U,
+    int n
+){
     std::vector<int> u(n, 0);
     std::vector<int> v(n, 0);
     std::vector<int> row(n, 0);
+    std::vector<int> pred(n, 0);
     std::vector<int> phi(n, 0);
+
+    // U_ is the set of vertices already reached
     std::set<int> U_;
     std::set<int> U_dif_U_;
-    int sink;
+    std::set<int> V_dif_LV_;
+    std::set<int> SU, LV;
+    int sink, k, j = 0, i = 0, delta, h;
 
     while (U_.size() < n){
         U_dif_U_.clear();
         std::set_difference(U.begin(), U.end(), U_.begin(), U_.end(), std::inserter(U_dif_U_, U_dif_U_.begin()));
-                
+        
+        // let k  be any vertex in U \ U_
+        k = *U_dif_U_.begin();
+        while (!U_.contains(k)){
+            alternate(C, V, u, v, row, k, n, sink);
+
+            if(sink == 0) {
+                // increase the primal solution
+                U_.insert(k);
+                j = sink;
+
+                do {
+                    i = pred[j];
+                    row[j] = i;
+                    h = phi[i];
+                    phi[i] = j;
+                    j = h;
+                } while (i == k);
+            } else {
+                // update the dual solution
+                delta = C[*SU.begin()][*V_dif_LV_.begin()];
+
+                for (auto i : SU) {
+                    for (auto j : V_dif_LV_) {
+                        if ((C[i][j] - u[i] - v[j]) < delta){
+                            delta = C[i][j] - u[i] - v[j];
+                        }
+                    }        
+                }
+
+                for (auto i : SU) {
+                    u[i] = u[i] + delta;
+                }
+                for (auto j : LV) {
+                    v[j] = v[j] - delta;
+                }                                
+            }
+        }
+        
     }
     
 }
