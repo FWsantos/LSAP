@@ -2,7 +2,7 @@
 
 std::vector<int> Preprocess::feasible_solution(matrix<int> C, int n)
 {
-    matrix<int> X(n, std::vector<int>(n, 0));
+    // initialize u and v vectors
     std::vector<int> u = row_reduction(C, n);
     std::vector<int> v = column_reduction(C, u, n);
 
@@ -13,13 +13,11 @@ std::vector<int> Preprocess::feasible_solution(matrix<int> C, int n)
         {
             if (row[j] == 0 && (C[i][j] - u[i] - v[j]) == 0)
             {
-                X[i][j] = 1;
                 row[j] = i + 1;
                 break;
             }
         }
     }
-
     return row;
 }
 
@@ -36,9 +34,7 @@ std::vector<int> Preprocess::row_reduction(matrix<int> C, int n)
                 u[i] = C[i][j];
             }
         }
-        // std::cout << "u["<< i <<"] = " << u[i]<< "\n";
     }
-
     return u;
 }
 
