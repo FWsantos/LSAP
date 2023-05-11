@@ -1,7 +1,8 @@
 #include "Types.h"
 #include <string>
 
-class Utils {
+class Utils
+{
 private:
     /* data */
 public:

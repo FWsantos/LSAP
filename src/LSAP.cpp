@@ -2,54 +2,6 @@
 #include <algorithm>
 #include <iostream>
 
-void LSAP::printTeste() {
-    std::cout << "PrintTeste" << std::endl;
-}
-
-void LSAP::row_reduction(matrix<int> C, std::vector<int> &u, int n) {
-    for (int i = 0; i < n; ++i) {
-        u[i] = C[i][0];
-        for (int j = 0; j < n; ++j) {
-            if(u[i] > C[i][j]) {
-                u[i] = C[i][j];
-            }
-        }
-        // std::cout << "u["<< i <<"] = " << u[i]<< "\n";
-    }
-}
-
-void LSAP::column_reduction(matrix<int> C, std::vector<int> u, std::vector<int> &v, int n) {
-    for (int j = 0; j < n; j++) {
-        v[j] = C[0][j] - u[0];
-        for (int i = 0; i < n; i++) {
-            if(v[j] > C[i][j] - u[i]) {
-                v[j] = C[i][j] - u[i];
-            }
-        }
-    // std::cout << "v["<< j <<"] = " << v[j]<< "\n";
-    }
-}
-
-void LSAP::basic_preprocessing(matrix<int> C, int n, std::vector<int> &row) {
-    matrix<int> X(n, std::vector<int>(n, 0));
-    std::vector<int> u(n, 0);
-    std::vector<int> v(n, 0);
-    
-    row_reduction(C, u, n);
-    column_reduction(C, u, v, n);
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if(row[j] == 0 && (C[i][j] - u[i] - v[j]) == 0) {
-                X[i][j] = 1;
-                row[j] = i+1;
-                break;
-            }
-        }
-        
-    }
-}
-
 void LSAP::alternate(
     matrix<int> C,
     std::set<int> V,

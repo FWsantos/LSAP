@@ -14,6 +14,7 @@ enable_testing()
 
 set(headers
     include/LSAP.h
+    include/Preprocess.h
     include/Utils.h
     include/Tests.h
     include/Types.h
@@ -21,6 +22,7 @@ set(headers
 
 set(sources
     src/LSAP.cpp
+    src/Preprocess.cpp
     src/Utils.cpp
     src/Tests.cpp
     )
