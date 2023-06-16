@@ -35,3 +35,14 @@ matrix<int> Utils::read_file(std::string file_path, int &n)
     file.close();
     return C;
 }
+
+void Utils::print_matrix(matrix<int> C)
+{
+    for (auto &row : C)
+    {
+        for (auto &element : row)
+            std::cout << element << "\t";
+        std::cout << "\n";
+    }
+    std::cout << "\n";
+}

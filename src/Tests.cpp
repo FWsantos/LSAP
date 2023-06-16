@@ -9,7 +9,7 @@ void Tests::test_basic_preprocessing()
 {
     int n = 0;
     // Initialize cost matrix C and get n
-    matrix<int> C = Utils::read_file("..\\..\\file_inputs\\basic_test.txt", n);
+    matrix<int> C = Utils::read_file(Tests::file_path, n);
 
     std::vector<int> row = Preprocess::feasible_solution(C, n);
 
@@ -33,7 +33,7 @@ void Tests::test_basic_preprocessing()
 void Tests::test_read_file()
 {
     int n;
-    matrix<int> C = Utils::read_file("../file_inputs/basic_test.txt", n);
+    matrix<int> C = Utils::read_file(Tests::file_path, n);
     std::cout << "n: " << n << std::endl;
 }
 
@@ -58,4 +58,19 @@ void Tests::set_test()
     }
 
     std::cout << "\n\n\n";
+}
+
+void Tests::hungarian()
+{
+    std::cout << "Hungarian function test begin...\n";
+    int n = 0;
+    // Initialize cost matrix C and get n
+    matrix<int> C = Utils::read_file(Tests::file_path, n);
+    Utils::print_matrix(C);
+
+    LSAP::hungarian(C, n);
+
+    Utils::print_matrix(C);
+
+    std::cout << "successful test\n";
 }
