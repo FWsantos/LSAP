@@ -72,8 +72,9 @@ void LSAP::hungarian(matrix<int> &C, int n)
     std::for_each(C.begin(), C.end(), change_rows);
 
     // Step 2: Subtract column minima
-    // Similarly, for each column, find the lowest element and subtract it from each element in that column.
-    for (int col = 0; col < n; ++col)
+    // Similarly, for each column, find the lowest element and subtract it from each element in
+    // that column.
+    for (int col = 0; col < n; col++)
     {
         std::vector<int> column;
         for (const auto &row : C)
@@ -84,6 +85,42 @@ void LSAP::hungarian(matrix<int> &C, int n)
         if (min > 0)
             for (auto &row : C)
                 row[col] -= min;
+    }
+
+    // Step 3: Cover all zeros with a minimum number of lines
+    // Cover all zeros in the resulting matrix using a minimum number of horizontal and vertical
+    // lines. If n lines are required, an optimal assignment exists among the zeros. The algorithm
+    // stops.
+    // If less than n lines are required, continue with Step 4.
+    int xzero = 0;
+    int yzero = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (C[i][j] == 0)
+            {
+                xzero++;
+                if (xzero == 2)
+                    break;
+            }
+            if (C[j][i] == 0)
+            {
+                yzero++;
+                if (yzero == 2)
+                    break;
+            }
+        }
+        if (xzero == 2 || yzero == 2)
+        {
+            std::cout << "More that one zero by row or by column.\n";
+            break;
+        }
+        else
+        {
+            xzero = 0;
+            yzero = 0;
+        }
     }
 }
 
