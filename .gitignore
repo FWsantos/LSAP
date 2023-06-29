@@ -2,3 +2,4 @@
 .exe
 build/
 old/
+build_command.txt

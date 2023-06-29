@@ -4,15 +4,17 @@
 class LSAP
 {
 public:
-    static void alternate(
+    // Find an alternating tree rooted at an unassigned vertex k in U
+    static int alternate_k(
         matrix<int> C,
         std::set<int> V,
         std::vector<int> u,
         std::vector<int> v,
         std::vector<int> row,
         int k,
-        int n,
-        int &sink);
+        int n);
+    // Find an alternating tree rooted at an unassigned vertex k in U
+    static int alternate_k_v2(matrix<int> C, int k);
     static void generate_phi(std::vector<int> row, std::vector<int> &phi);
 
     // Basic Hungarian algorithm based on https://hungarianalgorithm.com.
