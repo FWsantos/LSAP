@@ -21,11 +21,22 @@ public:
 
     /* Basic O(n^4) Hungarian algorithm. */
     static void hungarian_n4(matrix<int> C,
-                             std::set<int> V, std::set<int> U, int n);
+       std::set<int> V, std::set<int> U, int n);
 
     // Find an alternating tree rooted at an unassigned vertex k in U
-    static int alternate_k_v2(matrix<int> C, std::set<int> V, int k);
+    static int alternate_k_v2(
+        matrix<int> C,
+        std::set<int> V,
+        std::set<int> &SU,
+        std::set<int> &LV,
+        std::set<int> &V_diff_LV,
+        std::vector<int> u,
+        std::vector<int> v,
+        std::vector<int> row,
+        std::vector<int> &pred,
+        int k);
     /* Basic O(n^4) Hungarian algorithm. */
     static void hungarian_n4_v2(matrix<int> C, int n);
 private:
+    static std::set<int> diff(std::set<int> A, std::set<int> B);
 };
