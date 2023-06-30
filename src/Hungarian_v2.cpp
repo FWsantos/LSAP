@@ -1,4 +1,5 @@
 #include "../include/LSAP.h"
+#include "../include/Preprocess.h"
 #include <algorithm>
 #include <iostream>
 
@@ -8,6 +9,11 @@ std::set<int> LSAP::diff(std::set<int> A, std::set<int> B)
     std::set<int> A_diff_B;
     std::set_difference(A.begin(), A.end(), B.begin(), B.end(), std::inserter(A_diff_B, A_diff_B.begin()));
     return A_diff_B;
+}
+
+static std::vector<int> generate_phi(std::vector<int> row, phi)
+{
+    
 }
 
 
@@ -59,23 +65,28 @@ int LSAP::alternate_k_v2(
             std::cout << "Entrou no for\n";
             std::cout << "Valor do i = "<< i <<"\n";
             std::cout << "Valor do j = "<< j <<"\n";
-            std::cout << "Valor do C[i][j] = "<< C[i][j] <<"\n";
-            std::cout << "Valor do u[i] = "<< u[i] <<"\n";
-            std::cout << "Valor do v[j] = "<< v[j] <<"\n";
+            // std::cout << "Valor do C[i][j] = "<< C[i][j] <<"\n";
+            // std::cout << "Valor do u[i] = "<< u[i] <<"\n";
+            // std::cout << "Valor do v[j] = "<< v[j] <<"\n";
             if ((C[i][j] -u[i] -v[j]) == 0)
             {
                 std::cout << "Entrou no IF\n";
 
                 pred[j] = i;
                 LV.insert(j);
+                std::cout << "LV.size() == "<< LV.size() <<"\n";
+
             }
         }
+        std::cout << "saiu do for\n";
 
         std::set<int> LV_diff_SV = LSAP::diff(V, LV);
 
         if(LV_diff_SV.empty()){
+            std::cout << "linha 80\n";
             fail = true;
         }else {
+            std::cout << "linha 83\n";
             int j = *LV_diff_SV.begin();
             SV.insert(j);
             if(row[j] == 0) {
@@ -91,13 +102,15 @@ int LSAP::alternate_k_v2(
 
 void LSAP::hungarian_n4_v2(matrix<int> C, int n) 
 {
-    std::vector<int> u, v, row, pred, phi;
+    std::vector<int> u, v, row, pred(n, 0), phi(n,0);
     std::set<int> V, U, U_, SU, LV, V_diff_LV;
 
     for (int x = 0; x < n; ++x){
         V.insert(x);
         U.insert(x);
     }
+
+    row = Preprocess::feasible_solution(C, u, v, n);
 
     while(U_.size() < n){
         std::set<int> U_diff_U_ = LSAP::diff(U, U_);
@@ -106,7 +119,7 @@ void LSAP::hungarian_n4_v2(matrix<int> C, int n)
 
         std::cout << "O k escolhido foi "<< k <<"\n";
 
-        std::cout<<"!U_.contains(k) = " << !U_.contains(k) <<"\n";
+        // std::cout<<"!U_.contains(k) = " << !U_.contains(k) <<"\n";
         while(!U_.contains(k)){
             int sink = LSAP::alternate_k_v2(C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
             std::cout << "O sink foi "<< sink <<"\n";

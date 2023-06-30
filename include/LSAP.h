@@ -14,8 +14,6 @@ public:
         int k,
         int n);
     
-    static void generate_phi(std::vector<int> row, std::vector<int> &phi);
-
     // Basic Hungarian algorithm based on https://hungarianalgorithm.com.
     static void hungarian(matrix<int> &C, int n);
 
@@ -39,4 +37,6 @@ public:
     static void hungarian_n4_v2(matrix<int> C, int n);
 private:
     static std::set<int> diff(std::set<int> A, std::set<int> B);
+    static std::vector<int> generate_phi(std::vector<int> row, phi);
+    
 };

@@ -11,12 +11,17 @@ public:
         @brief Generates feasible solution in O(n^2) time.
 
         @param C: Cost matrix.
+        @param u: Copy by reference of vector u and is fill with row reduction.
+        @param u: Copy by reference of vector v and is fill with column reduction.
         @param n: Number of rows and columns in the matrix C.
+
 
         @return Vector that represents the columns of the matrix. Each element stores the row to which the column is assigned.  If it is not assigned to anyone, the value is 0.
      */
     static std::vector<int> feasible_solution(
         matrix<int> C,
+        std::vector<int> &u,
+        std::vector<int> &v,
         int n);
 
 private:

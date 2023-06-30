@@ -10,8 +10,9 @@ void Tests::test_basic_preprocessing()
     int n = 0;
     // Initialize cost matrix C and get n
     matrix<int> C = Utils::read_file(Tests::file_path, n);
+    std::vector<int> u, v;
 
-    std::vector<int> row = Preprocess::feasible_solution(C, n);
+    std::vector<int> row = Preprocess::feasible_solution(C, u, v, n);
 
     std::cout << "C = ";
     for (int i = 0; i < n; ++i)

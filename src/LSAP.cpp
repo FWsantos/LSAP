@@ -124,10 +124,6 @@ int LSAP::alternate_k(
     return sink;
 }
 
-void LSAP::generate_phi(std::vector<int> row, std::vector<int> &phi)
-{
-}
-
 void LSAP::hungarian_n4(
     matrix<int> C,
     std::set<int> V,
