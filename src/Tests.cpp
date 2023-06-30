@@ -74,3 +74,18 @@ void Tests::hungarian()
 
     std::cout << "successful test\n";
 }
+
+void Tests::hungarian_v2()
+{
+    std::cout << "Hungarian function test begin...\n";
+    int n = 0;
+    // Initialize cost matrix C and get n
+    matrix<int> C = Utils::read_file(Tests::file_path, n);
+    Utils::print_matrix(C);
+
+    LSAP::hungarian_n4_v2(C, n);
+
+    Utils::print_matrix(C);
+
+    std::cout << "successful test\n";
+}
