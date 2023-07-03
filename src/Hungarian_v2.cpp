@@ -11,9 +11,18 @@ std::set<int> LSAP::diff(std::set<int> A, std::set<int> B)
     return A_diff_B;
 }
 
-static std::vector<int> generate_phi(std::vector<int> row, phi)
+std::vector<int> LSAP::generate_phi(std::vector<int> row)
 {
-    
+    std::vector<int> phi (row.size(), 0);
+    for (int j = 0; j < row.size(); ++j)
+    {
+        if (row[j] != 0)
+        {
+            phi[row[j] - 1] = j +1;
+        }
+    }
+
+    return phi;
 }
 
 

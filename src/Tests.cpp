@@ -5,6 +5,43 @@
 #include <algorithm>
 #include <iostream>
 
+
+void Tests::test_generate_phi()
+{
+    int n = 0;
+    // Initialize cost matrix C and get n
+    matrix<int> C = Utils::read_file(Tests::file_path, n);
+    std::vector<int> u, v;
+
+    std::vector<int> row = Preprocess::feasible_solution(C, u, v, n);
+    
+    std::cout << "C = ";
+    for (int i = 0; i < n; ++i)
+    {
+        std::cout << "\t";
+        for (int j = 0; j < n; ++j)
+        {
+            std::cout << C[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "row = ";
+    for (int i = 0; i < n; ++i){
+        std::cout << " " << row[i] << " ";
+    }
+    std::cout << std::endl;
+
+    std::vector<int> phi = LSAP::generate_phi(row);
+
+    std::cout << "phi = ";
+    for (int i = 0; i < n; ++i){
+        std::cout << " " << phi[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+
 void Tests::test_basic_preprocessing()
 {
     int n = 0;

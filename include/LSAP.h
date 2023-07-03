@@ -35,8 +35,8 @@ public:
         int k);
     /* Basic O(n^4) Hungarian algorithm. */
     static void hungarian_n4_v2(matrix<int> C, int n);
+    
+    static std::vector<int> generate_phi(std::vector<int> row);
 private:
     static std::set<int> diff(std::set<int> A, std::set<int> B);
-    static std::vector<int> generate_phi(std::vector<int> row, phi);
-    
 };

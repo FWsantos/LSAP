@@ -17,7 +17,7 @@ std::vector<int> Preprocess::feasible_solution(
         {
             if (row[j] == 0 && (C[i][j] - u[i] - v[j]) == 0)
             {
-                row[j] = i;
+                row[j] = i + 1;
                 break;
             }
         }
