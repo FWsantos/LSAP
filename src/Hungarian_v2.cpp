@@ -47,7 +47,6 @@ int LSAP::alternate_k_v2(
     std::vector<int> &pred,
     int k)
 {
-    std::cout << "Alternate k v2!!!!\n";
     // SU, SV => Scanned vertices
     // LV => Labbed vertices
     std::set<int> SV;
@@ -56,7 +55,6 @@ int LSAP::alternate_k_v2(
     // Sink is return about function
     int sink = 0;
     int i = k;
-    std::cout << "Valor do i = "<< i <<"\n";
 
 
     while (fail == false && sink == 0)
@@ -65,43 +63,31 @@ int LSAP::alternate_k_v2(
         SU.insert(i);
         // V_diff_LV = V\LV
         V_diff_LV = LSAP::diff(V, LV);
-        std::cout << "V_diff_LV.size() == "<< V_diff_LV.size() <<"\n";
 
 
         for (auto j_iterator = V_diff_LV.begin(); j_iterator != V_diff_LV.end(); ++j_iterator)
         {
             int j = *j_iterator;
-            std::cout << "Entrou no for\n";
-            std::cout << "Valor do i = "<< i <<"\n";
-            std::cout << "Valor do j = "<< j <<"\n";
-            // std::cout << "Valor do C[i][j] = "<< C[i][j] <<"\n";
-            // std::cout << "Valor do u[i] = "<< u[i] <<"\n";
-            // std::cout << "Valor do v[j] = "<< v[j] <<"\n";
             if ((C[i][j] -u[i] -v[j]) == 0)
             {
-                std::cout << "Entrou no IF\n";
 
                 pred[j] = i;
                 LV.insert(j);
-                std::cout << "LV.size() == "<< LV.size() <<"\n";
 
             }
         }
-        std::cout << "saiu do for\n";
-
+3   
         std::set<int> LV_diff_SV = LSAP::diff(V, LV);
 
         if(LV_diff_SV.empty()){
-            std::cout << "linha 80\n";
             fail = true;
         }else {
-            std::cout << "linha 83\n";
             int j = *LV_diff_SV.begin();
             SV.insert(j);
             if(row[j] == 0) {
                 sink = j;
             } else {
-                i = row[j];
+                i = row[j] - 1;
             }
         }
     }
@@ -120,18 +106,16 @@ void LSAP::hungarian_n4_v2(matrix<int> C, int n)
     }
 
     row = Preprocess::feasible_solution(C, u, v, n);
-
+    phi = LSAP::generate_phi(row);
+    
     while(U_.size() < n){
         std::set<int> U_diff_U_ = LSAP::diff(U, U_);
         
         int k = *U_diff_U_.begin();
 
-        std::cout << "O k escolhido foi "<< k <<"\n";
 
-        // std::cout<<"!U_.contains(k) = " << !U_.contains(k) <<"\n";
         while(!U_.contains(k)){
             int sink = LSAP::alternate_k_v2(C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
-            std::cout << "O sink foi "<< sink <<"\n";
 
             if(sink > 0){
                 U_.insert(k);
