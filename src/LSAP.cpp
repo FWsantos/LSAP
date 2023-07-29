@@ -1,199 +1,153 @@
 #include "../include/LSAP.h"
+#include "../include/Preprocess.h"
 #include <algorithm>
 #include <iostream>
 
-void LSAP::hungarian(matrix<int> &C, int n)
+
+std::set<int> LSAP::diff(std::set<int> A, std::set<int> B)
 {
-    // Step 1: Subtract row minima
-    // For each row, find the lowest element and subtract it from each element in that row.
-
-    // Lambda function that receive row reference.
-    auto change_rows = [](auto &row)
-    {
-        // Get minimum value in row.
-        int min = *std::min_element(row.begin(), row.end());
-
-        // Decrement minimum value for each element in the row.
-        for (auto &element : row)
-            element -= min;
-    };
-
-    // Execute changes_row lambda for each row in the C matrix.
-    std::for_each(C.begin(), C.end(), change_rows);
-
-    // Step 2: Subtract column minima
-    // Similarly, for each column, find the lowest element and subtract it from each element in
-    // that column.
-    for (int col = 0; col < n; col++)
-    {
-        std::vector<int> column;
-        for (const auto &row : C)
-            column.push_back(row[col]);
-
-        int min = *std::min_element(column.begin(), column.end());
-
-        if (min > 0)
-            for (auto &row : C)
-                row[col] -= min;
-    }
-
-    // Step 3: Cover all zeros with a minimum number of lines
-    // Cover all zeros in the resulting matrix using a minimum number of horizontal and vertical
-    // lines. If n lines are required, an optimal assignment exists among the zeros. The algorithm
-    // stops.
-    // If less than n lines are required, continue with Step 4.
-    int xzero = 0;
-    int yzero = 0;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            if (C[i][j] == 0)
-            {
-                xzero++;
-                if (xzero == 2)
-                    break;
-            }
-            if (C[j][i] == 0)
-            {
-                yzero++;
-                if (yzero == 2)
-                    break;
-            }
-        }
-        if (xzero == 2 || yzero == 2)
-        {
-            std::cout << "More that one zero by row or by column.\n";
-            break;
-        }
-        else
-        {
-            xzero = 0;
-            yzero = 0;
-        }
-    }
+    std::set<int> A_diff_B;
+    std::set_difference(A.begin(), A.end(), B.begin(), B.end(), std::inserter(A_diff_B, A_diff_B.begin()));
+    return A_diff_B;
 }
 
-int LSAP::alternate_k(
+std::vector<int> LSAP::generate_phi(std::vector<int> row)
+{
+    std::vector<int> phi (row.size(), 0);
+    for (int j = 0; j < row.size(); ++j)
+    {
+        if (row[j] != 0)
+        {
+            phi[row[j] - 1] = j + 1;
+        }
+    }
+
+    return phi;
+}
+
+
+// define LSAP through a graph theory model. Define a bipartite
+// graph G = (U, V ; E) having a vertex of U for each row, a vertex of V for
+// each column, and cost cij associated with edge [i, j ] (i, j = 1, 2,...,n):
+// The problem is then to determine a minimum cost perfect matching in G
+// (weighted bipartite matching problem: find a subset of edges such that each
+// vertex belongs to exactly one edge and the sum of the costs of these edges
+// is a minimum)
+
+// Find an alternating tree rooted at an unassigned vertex k into U
+int LSAP::alternate_k_v2(
     matrix<int> C,
     std::set<int> V,
+    std::set<int> &SU,
+    std::set<int> &LV,
+    std::set<int> &V_diff_LV,
     std::vector<int> u,
     std::vector<int> v,
     std::vector<int> row,
-    int k,
-    int n)
+    std::vector<int> &pred,
+    int k)
 {
-    std::set<int> SU, LV, SV, V_dif_LV, LV_dif_SV;
-    std::vector<int> pred;
+    // SU, SV => Scanned vertices
+    // LV => Labbed vertices
+    std::set<int> SV;
     bool fail = false;
+
+    // Sink is return about function
     int sink = 0;
     int i = k;
 
+
     while (fail == false && sink == 0)
     {
+        // Scanning vertex i
         SU.insert(i);
+        // V_diff_LV = V\LV
+        V_diff_LV = LSAP::diff(V, LV);
 
-        std::set_difference(V.begin(), V.end(), LV.begin(), LV.end(), std::inserter(V_dif_LV, V_dif_LV.begin()));
 
-        for (
-            int j = 0;
-            j < static_cast<int>(V_dif_LV.size() || C[i][j] - u[i] - v[j] == 0);
-            j++)
+        for (auto j_iterator = V_diff_LV.begin(); j_iterator != V_diff_LV.end(); ++j_iterator)
         {
-            pred[j] = i;
-            LV.insert(j);
+            int j = *j_iterator;
+            if ((C[i][j] -u[i] -v[j]) == 0)
+            {
+
+                pred[j] = i;
+                LV.insert(j);
+
+            }
         }
 
-        std::set_difference(LV.begin(), LV.end(), SV.begin(), SV.end(), std::inserter(LV_dif_SV, LV_dif_SV.begin()));
-        if (LV_dif_SV.empty())
-        {
+        std::set<int> LV_diff_SV = LSAP::diff(V, LV);
+
+        if(LV_diff_SV.empty()){
             fail = true;
-        }
-        else
-        {
-            std::for_each(LV_dif_SV.begin(), LV_dif_SV.end(), [&](const int &j)
-                          {
-                SV.insert(j);
-                if(row[j] == 0){
-                    sink = j;
-                }else{
-                    i = row[j];
-                } });
+        }else {
+            int j = *LV_diff_SV.begin();
+            SV.insert(j);
+            if(row[j] == 0) {
+                sink = j;
+            } else {
+                i = row[j] - 1;
+            }
         }
     }
+
     return sink;
 }
 
-void LSAP::hungarian_n4(
-    matrix<int> C,
-    std::set<int> V,
-    std::set<int> U,
-    int n)
+void LSAP::hungarian_n4_v2(matrix<int> C, int n) 
 {
-    std::vector<int> u(n, 0);
-    std::vector<int> v(n, 0);
-    std::vector<int> row(n, 0);
-    std::vector<int> pred(n, 0);
-    std::vector<int> phi(n, 0);
+    std::vector<int> u, v, row, pred(n, 0), phi(n,0);
+    std::set<int> V, U, U_, SU, LV, V_diff_LV;
 
-    // U_ is the set of vertices already reached
-    std::set<int> U_;
-    std::set<int> U_dif_U_;
-    std::set<int> V_dif_LV_;
-    std::set<int> SU, LV;
-    int sink, k, j = 0, i = 0, delta, h;
+    for (int x = 0; x < n; ++x){
+        V.insert(x);
+        U.insert(x);
+    }
 
-    while (U_.size() < n)
-    {
-        U_dif_U_.clear();
-        std::set_difference(U.begin(), U.end(), U_.begin(), U_.end(), std::inserter(U_dif_U_, U_dif_U_.begin()));
+    row = Preprocess::feasible_solution(C, u, v, n);
+    phi = LSAP::generate_phi(row);
+    
+    while(U_.size() < n){
+        std::set<int> U_diff_U_ = LSAP::diff(U, U_);
+        
+        int k = *U_diff_U_.begin();
 
-        // let k  be any vertex in U \ U_
-        k = *U_dif_U_.begin();
-        while (!U_.contains(k))
-        {
-            sink = alternate_k(C, V, u, v, row, k, n);
 
-            if (sink == 0)
-            {
-                // increase the primal solution
+        while(!U_.contains(k)){
+            int sink = LSAP::alternate_k_v2(C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
+
+            if(sink > 0){
                 U_.insert(k);
-                j = sink;
+                
+                int i, h, j = sink;
 
-                do
-                {
+                do{
                     i = pred[j];
                     row[j] = i;
                     h = phi[i];
                     phi[i] = j;
                     j = h;
-                } while (i == k);
-            }
-            else
-            {
-                // update the dual solution
-                delta = C[*SU.begin()][*V_dif_LV_.begin()];
+                } while(i != k);
 
-                for (auto i : SU)
-                {
-                    for (auto j : V_dif_LV_)
-                    {
-                        if ((C[i][j] - u[i] - v[j]) < delta)
-                        {
-                            delta = C[i][j] - u[i] - v[j];
+            } else {
+                int delta = 0;
+                for (auto i = SU.begin(); i != SU.end(); ++i){
+                    for (auto j = V_diff_LV.begin(); j != V_diff_LV.end(); ++j){
+                        if ((C[*i][*j] - u[*i] -v[*j]) < delta){
+                            delta = C[*i][*j] - u[*i] -v[*j];                       
                         }
                     }
                 }
 
-                for (auto i : SU)
-                {
-                    u[i] = u[i] + delta;
+                for (auto i = SU.begin(); i != SU.end(); ++i){
+                    u[*i] = u[*i] + delta;
                 }
-                for (auto j : LV)
-                {
-                    v[j] = v[j] - delta;
+                for (auto j = LV.begin(); j != LV.end(); ++j){
+                    v[*j] = v[*j] - delta;
                 }
             }
         }
     }
 }
+

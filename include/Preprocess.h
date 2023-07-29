@@ -19,7 +19,7 @@ public:
         @return Vector that represents the columns of the matrix. Each element stores the row to which the column is assigned.  If it is not assigned to anyone, the value is 0.
      */
     static std::vector<int> feasible_solution(
-        matrix<int> C,
+        matrix<int> &C,
         std::vector<int> &u,
         std::vector<int> &v,
         int n);

@@ -22,7 +22,7 @@ set(headers
 
 set(sources
     src/LSAP.cpp
-    src/Hungarian_v2.cpp
+    src/LSAP_old.cpp
     src/Preprocess.cpp
     src/Utils.cpp
     src/Tests.cpp

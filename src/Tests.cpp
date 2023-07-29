@@ -62,6 +62,16 @@ void Tests::test_basic_preprocessing()
         std::cout << std::endl;
     }
 
+    std::cout << "u = ";
+    for (int i = 0; i < n; ++i)
+        std::cout << " " << u[i] << " ";
+    std::cout << std::endl;
+
+    std::cout << "v = ";
+    for (int i = 0; i < n; ++i)
+        std::cout << " " << v[i] << " ";
+    std::cout << std::endl;
+
     std::cout << "row = ";
     for (int i = 0; i < n; ++i)
         std::cout << " " << row[i] << " ";

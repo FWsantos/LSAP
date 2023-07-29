@@ -1,7 +1,7 @@
 #include "../include/Preprocess.h"
 
 std::vector<int> Preprocess::feasible_solution(
-    matrix<int> C,
+    matrix<int> &C,
     std::vector<int> &u,
     std::vector<int> &v,
     int n)
@@ -13,12 +13,14 @@ std::vector<int> Preprocess::feasible_solution(
     std::vector<int> row(n, 0);
     for (int i = 0; i < n; i++)
     {
+        bool stop = false;
         for (int j = 0; j < n; j++)
         {
-            if (row[j] == 0 && (C[i][j] - u[i] - v[j]) == 0)
+            C[i][j] = C[i][j] - u[i] - v[j];
+            if (row[j] == 0 && C[i][j] == 0 && !stop)
             {
                 row[j] = i + 1;
-                break;
+                stop = true;
             }
         }
     }
