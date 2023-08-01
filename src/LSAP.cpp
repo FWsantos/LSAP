@@ -47,6 +47,8 @@ int LSAP::alternate_k_v2(
     std::vector<int> &pred,
     int k)
 {
+    std::cout << "k = " << k << std::endl;
+
     // SU, SV => Scanned vertices
     // LV => Labbed vertices
     std::set<int> SV;
@@ -56,7 +58,6 @@ int LSAP::alternate_k_v2(
     int sink = 0;
     int i = k;
 
-
     while (fail == false && sink == 0)
     {
         // Scanning vertex i
@@ -64,6 +65,12 @@ int LSAP::alternate_k_v2(
         // V_diff_LV = V\LV
         V_diff_LV = LSAP::diff(V, LV);
 
+        std::cout << "i = " << i << std::endl;
+
+        std::cout << "SU =";
+        for (auto iterator = SU.begin(); iterator != SU.end(); ++iterator)
+            std::cout << " " << *iterator << " ";
+        std::cout << std::endl;
 
         for (auto j_iterator = V_diff_LV.begin(); j_iterator != V_diff_LV.end(); ++j_iterator)
         {
@@ -76,6 +83,11 @@ int LSAP::alternate_k_v2(
 
             }
         }
+
+        std::cout << "pred = ";
+        for (int iterator = 0; iterator < pred.size(); ++iterator)
+            std::cout << " " << pred[iterator] << " ";
+        std::cout << "\n";
 
         std::set<int> LV_diff_SV = LSAP::diff(V, LV);
 
@@ -98,7 +110,7 @@ int LSAP::alternate_k_v2(
 void LSAP::hungarian_n4_v2(matrix<int> C, int n) 
 {
     std::vector<int> u, v, row, pred(n, 0), phi(n,0);
-    std::set<int> V, U, U_, SU, LV, V_diff_LV;
+    std::set<int> V, U, U_ = {1, 4}, SU, LV, V_diff_LV;
 
     for (int x = 0; x < n; ++x){
         V.insert(x);
@@ -107,14 +119,58 @@ void LSAP::hungarian_n4_v2(matrix<int> C, int n)
 
     row = Preprocess::feasible_solution(C, u, v, n);
     phi = LSAP::generate_phi(row);
+
+    std::cout << "C_ = ";
+    for (int i = 0; i < n; ++i)
+    {
+        std::cout << "\t";
+        for (int j = 0; j < n; ++j)
+        {
+            std::cout << C[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "u = ";
+    for (int i = 0; i < n; ++i){
+        std::cout << " " << u[i] << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "v = ";
+    for (int i = 0; i < n; ++i){
+        std::cout << " " << v[i] << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "row = ";
+    for (int i = 0; i < n; ++i){
+        std::cout << " " << row[i] << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "phi = ";
+    for (int itereadd = 0; itereadd < n; ++itereadd)
+    {
+        std::cout << " " << phi[itereadd] << " ";
+    }
+    std::cout << "\n";
+
+    std::cout << "U_ = ";
+    for (auto itereadd = U_.begin(); itereadd != U_.end(); ++itereadd)
+    {
+        std::cout << " " << *itereadd << " ";
+    }
+    std::cout << "\n";
     
     while(U_.size() < n){
         std::set<int> U_diff_U_ = LSAP::diff(U, U_);
         
-        int k = *U_diff_U_.begin();
-
+        // int k = *U_diff_U_.begin();
+        int k = 1;
 
         while(!U_.contains(k)){
+            std::cout << "\n";
             int sink = LSAP::alternate_k_v2(C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
 
             if(sink > 0){
