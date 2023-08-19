@@ -10,16 +10,16 @@ std::vector<int> Preprocess::feasible_solution(
     u = row_reduction(C, n);
     v = column_reduction(C, u, n);
 
-    std::vector<int> row(n, 0);
+    std::vector<int> row(n, -1);
     for (int i = 0; i < n; i++)
     {
         bool stop = false;
         for (int j = 0; j < n; j++)
         {
             C[i][j] = C[i][j] - u[i] - v[j];
-            if (row[j] == 0 && C[i][j] == 0 && !stop)
+            if (row[j] == -1 && C[i][j] == 0 && !stop)
             {
-                row[j] = i + 1;
+                row[j] = i;
                 stop = true;
             }
         }

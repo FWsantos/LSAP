@@ -9,7 +9,7 @@ public:
     static void test_basic_preprocessing();
     static void test_generate_phi();
     static void test_read_file();
+    static void test_alternate_k();
     static void set_test();
-    static void hungarian();
-    static void hungarian_v2();
+    static void hungarian_n4();
 };

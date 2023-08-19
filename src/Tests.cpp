@@ -108,22 +108,24 @@ void Tests::set_test()
     std::cout << "\n\n\n";
 }
 
-void Tests::hungarian()
+void Tests::test_alternate_k()
 {
-    std::cout << "Hungarian function test begin...\n";
+    std::cout << "Alternate_k function test begin...\n";
+    
     int n = 0;
+
     // Initialize cost matrix C and get n
     matrix<int> C = Utils::read_file(Tests::file_path, n);
-    Utils::print_matrix(C);
+    std::vector<int> u, v;
 
-    LSAP::hungarian(C, n);
-
-    Utils::print_matrix(C);
-
-    std::cout << "successful test\n";
+    std::vector<int> row = Preprocess::feasible_solution(C, u, v, n);
+    Utils::print_matrix(C, "C");
+    Utils::print_vector(u, "u");
+    Utils::print_vector(v, "v");
+    Utils::print_vector(row, "row");
 }
 
-void Tests::hungarian_v2()
+void Tests::hungarian_n4()
 {
     std::cout << "Hungarian function test begin...\n";
     int n = 0;
@@ -131,7 +133,7 @@ void Tests::hungarian_v2()
     matrix<int> C = Utils::read_file(Tests::file_path, n);
     Utils::print_matrix(C);
 
-    LSAP::hungarian_n4_v2(C, n);
+    LSAP::hungarian_n4(C, n);
 
     Utils::print_matrix(C);
 

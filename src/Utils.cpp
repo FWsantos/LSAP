@@ -36,13 +36,36 @@ matrix<int> Utils::read_file(std::string file_path, int &n)
     return C;
 }
 
-void Utils::print_matrix(matrix<int> C)
+void Utils::print_matrix(matrix<int> M, std::string name)
 {
-    for (auto &row : C)
+    if(!name.empty())
+        std::cout << name << "= \n";
+
+    for (auto &row : M)
     {
         for (auto &element : row)
             std::cout << element << "\t";
         std::cout << "\n";
     }
-    std::cout << "\n";
+    std::cout << "\n\n";
+}
+
+void Utils::print_vector(std::vector<int> V, std::string name)
+{
+    if(!name.empty())
+        std::cout << name << "= \n";
+
+    for (auto &element: V)
+        std::cout << element << "\t";
+    std::cout << "\n\n";    
+}
+
+void Utils::print_set(std::set<int> S, std::string name)
+{
+    if(!name.empty())
+        std::cout << name << "= \n";
+
+    for (auto iterator = S.begin(); iterator != S.end(); ++iterator)
+        std::cout << " " << *iterator << " ";
+    std::cout << "\n\n";
 }

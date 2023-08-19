@@ -13,12 +13,12 @@ std::set<int> LSAP::diff(std::set<int> A, std::set<int> B)
 
 std::vector<int> LSAP::generate_phi(std::vector<int> row)
 {
-    std::vector<int> phi (row.size(), 0);
+    std::vector<int> phi (row.size(), -1);
     for (int j = 0; j < row.size(); ++j)
     {
-        if (row[j] != 0)
+        if (row[j] != -1)
         {
-            phi[row[j] - 1] = j + 1;
+            phi[row[j]] = j;
         }
     }
 
@@ -35,7 +35,7 @@ std::vector<int> LSAP::generate_phi(std::vector<int> row)
 // is a minimum)
 
 // Find an alternating tree rooted at an unassigned vertex k into U
-int LSAP::alternate_k_v2(
+int LSAP::alternate_k(
     matrix<int> C,
     std::set<int> V,
     std::set<int> &SU,
@@ -107,7 +107,7 @@ int LSAP::alternate_k_v2(
     return sink;
 }
 
-void LSAP::hungarian_n4_v2(matrix<int> C, int n) 
+void LSAP::hungarian_n4(matrix<int> C, int n) 
 {
     std::vector<int> u, v, row, pred(n, 0), phi(n,0);
     std::set<int> V, U, U_ = {1, 4}, SU, LV, V_diff_LV;
@@ -171,7 +171,7 @@ void LSAP::hungarian_n4_v2(matrix<int> C, int n)
 
         while(!U_.contains(k)){
             std::cout << "\n";
-            int sink = LSAP::alternate_k_v2(C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
+            int sink = LSAP::alternate_k(C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
 
             if(sink > 0){
                 U_.insert(k);
