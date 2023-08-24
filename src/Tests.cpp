@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <iostream>
 
-
 void Tests::test_generate_phi()
 {
     int n = 0;
@@ -14,33 +13,16 @@ void Tests::test_generate_phi()
     std::vector<int> u, v;
 
     std::vector<int> row = Preprocess::feasible_solution(C, u, v, n);
-    
-    std::cout << "C = ";
-    for (int i = 0; i < n; ++i)
-    {
-        std::cout << "\t";
-        for (int j = 0; j < n; ++j)
-        {
-            std::cout << C[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
 
-    std::cout << "row = ";
-    for (int i = 0; i < n; ++i){
-        std::cout << " " << row[i] << " ";
-    }
-    std::cout << std::endl;
+    Utils::print_matrix(C, "C");
+    Utils::print_vector(u, "u");
+    Utils::print_vector(v, "v");
+    Utils::print_vector(row, "row");
 
     std::vector<int> phi = LSAP::generate_phi(row);
 
-    std::cout << "phi = ";
-    for (int i = 0; i < n; ++i){
-        std::cout << " " << phi[i] << " ";
-    }
-    std::cout << std::endl;
+    Utils::print_vector(phi, "phi");
 }
-
 
 void Tests::test_basic_preprocessing()
 {
@@ -51,31 +33,10 @@ void Tests::test_basic_preprocessing()
 
     std::vector<int> row = Preprocess::feasible_solution(C, u, v, n);
 
-    std::cout << "C = ";
-    for (int i = 0; i < n; ++i)
-    {
-        std::cout << "\t";
-        for (int j = 0; j < n; ++j)
-        {
-            std::cout << C[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout << "u = ";
-    for (int i = 0; i < n; ++i)
-        std::cout << " " << u[i] << " ";
-    std::cout << std::endl;
-
-    std::cout << "v = ";
-    for (int i = 0; i < n; ++i)
-        std::cout << " " << v[i] << " ";
-    std::cout << std::endl;
-
-    std::cout << "row = ";
-    for (int i = 0; i < n; ++i)
-        std::cout << " " << row[i] << " ";
-    std::cout << std::endl;
+    Utils::print_matrix(C, "C");
+    Utils::print_vector(u, "u");
+    Utils::print_vector(v, "v");
+    Utils::print_vector(row, "row");
 }
 
 void Tests::test_read_file()
@@ -111,7 +72,7 @@ void Tests::set_test()
 void Tests::test_alternate_k()
 {
     std::cout << "Alternate_k function test begin...\n";
-    
+
     int n = 0;
 
     // Initialize cost matrix C and get n

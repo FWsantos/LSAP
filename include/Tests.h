@@ -3,7 +3,11 @@
 class Tests
 {
 private:
-    inline static const std::string file_path = ".\\file_inputs\\example_1.txt";
+    // Windows
+    // inline static const std::string file_path = "..\\file_inputs\\example_1.txt";
+
+    // Linux
+    inline static const std::string file_path = "../file_inputs/example_1.txt";
 
 public:
     static void test_basic_preprocessing();
