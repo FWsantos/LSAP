@@ -1,7 +1,7 @@
 #include "../include/Preprocess.h"
 
 std::vector<int> Preprocess::feasible_solution(
-    matrix<int> &C,
+    matrix<int> C,
     std::vector<int> &u,
     std::vector<int> &v,
     int n)

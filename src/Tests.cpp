@@ -84,6 +84,30 @@ void Tests::test_alternate_k()
     Utils::print_vector(u, "u");
     Utils::print_vector(v, "v");
     Utils::print_vector(row, "row");
+
+    std::set<int> V;
+    for (int i = 0; i < n; i++)
+        V.insert(i);
+
+    std::set<int> SU;
+    std::set<int> LV;
+    std::set<int> V_diff_LV;
+    std::vector<int> pred(n, -1);
+    int k = 1;
+
+    int sink = LSAP::alternate_k(
+        C,
+        V,
+        SU,
+        LV,
+        V_diff_LV,
+        u,
+        v,
+        row,
+        pred,
+        k);
+
+    std::cout << "sink = " << sink << "\n";
 }
 
 void Tests::hungarian_n4()

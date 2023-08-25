@@ -38,34 +38,49 @@ matrix<int> Utils::read_file(std::string file_path, int &n)
 
 void Utils::print_matrix(matrix<int> M, std::string name)
 {
-    if(!name.empty())
-        std::cout << name << "= \n";
+    if (!name.empty())
+        std::cout << name << "= ";
 
-    for (auto &row : M)
-    {
-        for (auto &element : row)
-            std::cout << element << "\t";
-        std::cout << "\n";
-    }
+    if (M.empty())
+        std::cout << "empty";
+    else
+        for (auto &row : M)
+        {
+            std::cout << "\t";
+            for (auto &element : row)
+                std::cout << element << "\t";
+            std::cout << "\n";
+        }
     std::cout << "\n\n";
 }
 
 void Utils::print_vector(std::vector<int> V, std::string name)
 {
-    if(!name.empty())
-        std::cout << name << "= \n";
+    if (!name.empty())
+        std::cout << name << "= ";
 
-    for (auto &element: V)
-        std::cout << element << "\t";
-    std::cout << "\n\n";    
+    if (V.empty())
+        std::cout << "empty";
+    else
+    {
+        std::cout << "\t";
+        for (auto &element : V)
+            std::cout << element << "\t";
+    }
+    std::cout << "\n\n";
 }
 
 void Utils::print_set(std::set<int> S, std::string name)
 {
-    if(!name.empty())
-        std::cout << name << "= \n";
-
-    for (auto iterator = S.begin(); iterator != S.end(); ++iterator)
-        std::cout << " " << *iterator << " ";
+    if (!name.empty())
+        std::cout << name << "= ";
+    if (S.empty())
+        std::cout << "empty";
+    else
+    {
+        std::cout << "\t";
+        for (auto iterator = S.begin(); iterator != S.end(); ++iterator)
+            std::cout << " " << *iterator << " ";
+    }
     std::cout << "\n\n";
 }
