@@ -118,9 +118,14 @@ void Tests::hungarian_n4()
     matrix<int> C = Utils::read_file(Tests::file_path, n);
     Utils::print_matrix(C);
 
-    LSAP::hungarian_n4(C, n);
+    std::vector<int> phi = LSAP::hungarian_n4(C, n);
 
-    Utils::print_matrix(C);
+    Utils::print_vector(phi, "phi");
+    int result = 0;
+    for (int i = 0; i < n; i++)
+        result += C[i][phi[i]];
 
-    std::cout << "successful test\n";
+    std::cout << "The result is: " << result << "\n\n";
+
+    std::cout << "Hungarian function test end.\n";
 }

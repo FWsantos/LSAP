@@ -53,11 +53,11 @@ int LSAP::alternate_k(
 
     bool fail = false;
 
-    int sink = 0;
+    int sink = -1;
 
     int i = k;
 
-    while (fail == false && sink == 0)
+    while (fail == false && sink == -1)
     {
         // Scanning vertex i
         SU.insert(i);
@@ -102,10 +102,10 @@ int LSAP::alternate_k(
     return sink;
 }
 
-void LSAP::hungarian_n4(matrix<int> C, int n)
+std::vector<int> LSAP::hungarian_n4(matrix<int> C, int n)
 {
-    std::vector<int> u, v, row, pred(n, 0), phi(n, 0);
-    std::set<int> V, U, U_ = {1, 4}, SU, LV, V_diff_LV;
+    std::vector<int> u, v, row, pred(n, -1), phi(n, -1);
+    std::set<int> V, U, U_, SU, LV, V_diff_LV;
 
     for (int x = 0; x < n; ++x)
     {
@@ -116,67 +116,26 @@ void LSAP::hungarian_n4(matrix<int> C, int n)
     row = Preprocess::feasible_solution(C, u, v, n);
     phi = LSAP::generate_phi(row);
 
-    std::cout << "C_ = ";
-    for (int i = 0; i < n; ++i)
-    {
-        std::cout << "\t";
-        for (int j = 0; j < n; ++j)
-        {
-            std::cout << C[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout << "u = ";
-    for (int i = 0; i < n; ++i)
-    {
-        std::cout << " " << u[i] << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "v = ";
-    for (int i = 0; i < n; ++i)
-    {
-        std::cout << " " << v[i] << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "row = ";
-    for (int i = 0; i < n; ++i)
-    {
-        std::cout << " " << row[i] << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "phi = ";
-    for (int itereadd = 0; itereadd < n; ++itereadd)
-    {
-        std::cout << " " << phi[itereadd] << " ";
-    }
-    std::cout << "\n";
-
-    std::cout << "U_ = ";
-    for (auto itereadd = U_.begin(); itereadd != U_.end(); ++itereadd)
-    {
-        std::cout << " " << *itereadd << " ";
-    }
-    std::cout << "\n";
+    for (auto &element : row)
+        if (element != -1)
+            U_.insert(element);
 
     while (U_.size() < n)
     {
         std::set<int> U_diff_U_ = LSAP::diff(U, U_);
 
-        // int k = *U_diff_U_.begin();
-        int k = 1;
+        int k = *U_diff_U_.begin();
+        // int k = 1;
 
         while (!U_.contains(k))
         {
-            std::cout << "\n";
             int sink = LSAP::alternate_k(C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
 
-            if (sink > 0)
+            if (sink > -1)
             {
+                // Red flag!!!!!
                 U_.insert(k);
+                // ---------------------------------------------------------------------
 
                 int i, h, j = sink;
 
@@ -192,16 +151,24 @@ void LSAP::hungarian_n4(matrix<int> C, int n)
             else
             {
                 int delta = 0;
+
+                // Bugg: Not change delta value
+                // get min is wrong!
                 for (auto i = SU.begin(); i != SU.end(); ++i)
                 {
                     for (auto j = V_diff_LV.begin(); j != V_diff_LV.end(); ++j)
                     {
-                        if ((C[*i][*j] - u[*i] - v[*j]) < delta)
+                        int delta_ = C[*i][*j] - u[*i] - v[*j];
+
+                        if (i == SU.begin() && j == V_diff_LV.begin())
+                            delta = delta_;
+                        if ((delta_) < delta)
                         {
-                            delta = C[*i][*j] - u[*i] - v[*j];
+                            delta = delta_;
                         }
                     }
                 }
+                // ---------------------------------------------------------------------------------------------
 
                 for (auto i = SU.begin(); i != SU.end(); ++i)
                 {
@@ -214,4 +181,6 @@ void LSAP::hungarian_n4(matrix<int> C, int n)
             }
         }
     }
+
+    return phi;
 }

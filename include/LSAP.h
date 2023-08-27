@@ -18,8 +18,8 @@ public:
         int k);
 
     /* Basic O(n^4) Hungarian algorithm. */
-    static void hungarian_n4(matrix<int> C, int n);
-    
+    static std::vector<int> hungarian_n4(matrix<int> C, int n);
+
     // Generate phi vector from row vector.
     static std::vector<int> generate_phi(std::vector<int> row);
 
