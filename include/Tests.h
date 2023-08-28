@@ -16,4 +16,5 @@ public:
     static void test_alternate_k();
     static void set_test();
     static void hungarian_n4();
+    static void hungarian_n3();
 };
