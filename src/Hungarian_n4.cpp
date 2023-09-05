@@ -26,7 +26,9 @@ int LSAP::alternate_k(
     // SU, SV => Scanned vertices
     // LV => Labbed vertices
     std::set<int> SV;
-    SU = LV = V_diff_LV = SV;
+    SU.clear();
+    LV.clear();
+    V_diff_LV.clear();
 
     bool fail = false;
 
@@ -42,10 +44,8 @@ int LSAP::alternate_k(
         // V_diff_LV = V\LV
         V_diff_LV = LSAP::diff(V, LV);
 
-        for (auto j_iterator = V_diff_LV.begin(); j_iterator != V_diff_LV.end(); ++j_iterator)
+        for (const int &j : V_diff_LV)
         {
-            int j = *j_iterator;
-
             if ((C[i][j] - u[i] - v[j]) == 0)
             {
                 pred[j] = i;
@@ -62,17 +62,12 @@ int LSAP::alternate_k(
         else
         {
             int j = *LV_diff_SV.begin();
-
             SV.insert(j);
 
             if (row[j] == -1)
-            {
                 sink = j;
-            }
             else
-            {
                 i = row[j];
-            }
         }
     }
 
@@ -93,7 +88,7 @@ std::vector<int> LSAP::hungarian_n4(matrix<int> C, int n)
     row = Preprocess::feasible_solution(C, u, v, n);
     phi = LSAP::generate_phi(row);
 
-    for (auto &element : row)
+    for (const int &element : row)
         if (element != -1)
             U_.insert(element);
 
@@ -118,38 +113,30 @@ std::vector<int> LSAP::hungarian_n4(matrix<int> C, int n)
                 {
                     i = pred[j];
                     row[j] = i;
-                    h = phi[i];
-                    phi[i] = j;
-                    j = h;
+                    std::swap(phi[i], j);
                 } while (i != k);
             }
             else
             {
                 int delta = 0;
 
-                for (auto i = SU.begin(); i != SU.end(); ++i)
+                for (const int &i : SU)
                 {
-                    for (auto j = V_diff_LV.begin(); j != V_diff_LV.end(); ++j)
+                    for (const int &j : V_diff_LV)
                     {
-                        int delta_ = C[*i][*j] - u[*i] - v[*j];
+                        int delta_ = C[i][j] - u[i] - v[j];
 
-                        if (i == SU.begin() && j == V_diff_LV.begin())
+                        if (i == *SU.begin() && j == *V_diff_LV.begin())
                             delta = delta_;
-                        if ((delta_) < delta)
-                        {
-                            delta = delta_;
-                        }
+
+                        delta = std::min(delta, delta_);
                     }
                 }
 
-                for (auto i = SU.begin(); i != SU.end(); ++i)
-                {
-                    u[*i] = u[*i] + delta;
-                }
-                for (auto j = LV.begin(); j != LV.end(); ++j)
-                {
-                    v[*j] = v[*j] - delta;
-                }
+                for (const int &i : SU)
+                    u[i] += delta;
+                for (const int &j : LV)
+                    v[j] -= delta;
             }
         }
     }

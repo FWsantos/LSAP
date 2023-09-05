@@ -17,12 +17,14 @@ int LSAP::augment_k(
     int k)
 {
     int int_max = std::numeric_limits<int>::max();
-    std::vector<int> pi(row.size(), int_max);
+    std::vector<int> pi(V.size(), int_max);
 
     // SU, SV => Scanned vertices
     // LV => Labbed vertices
     std::set<int> SV;
-    SU = LV = V_diff_LV = SV;
+    SU.clear();
+    LV.clear();
+    V_diff_LV.clear();
 
     int sink = -1;
     int i = k;
@@ -33,9 +35,8 @@ int LSAP::augment_k(
 
         V_diff_LV = LSAP::diff(V, LV);
 
-        for (auto j_iterator = V_diff_LV.begin(); j_iterator != V_diff_LV.end(); ++j_iterator)
+        for (const int &j : V_diff_LV)
         {
-            int j = *j_iterator;
             if ((C[i][j] - u[i] - v[j]) < pi[j])
             {
                 pred[j] = i;
@@ -49,22 +50,22 @@ int LSAP::augment_k(
 
         if (LV_diff_SV.empty())
         {
-            int delta = *LV_diff_SV.begin();
-            for (auto j = LV_diff_SV.begin(); j != LV_diff_SV.end(); ++j)
-                if (*j < delta)
-                    delta = *j;
+            int delta = *V_diff_LV.begin();
+            for (const int &j : LV_diff_SV)
+                if (j < delta)
+                    delta = j;
 
-            for (auto i = SU.begin(); i != SU.end(); ++i)
-                u[*i] += delta;
+            for (const int &i : SU)
+                u[i] += delta;
 
-            for (auto j = LV.begin(); j != LV.end(); ++j)
-                v[*j] += delta;
+            for (const int &j : LV)
+                v[j] += delta;
 
-            for (auto j = V_diff_LV.begin(); j != V_diff_LV.end(); ++j)
+            for (const int &j : V_diff_LV)
             {
-                pi[*j] -= delta;
-                if (pi[*j] == 0)
-                    LV.insert(*j);
+                pi[j] -= delta;
+                if (pi[j] == 0)
+                    LV.insert(j);
             }
         }
 
@@ -105,7 +106,7 @@ std::vector<int> LSAP::hungarian_n3(matrix<int> C, int n)
         int k = *U_diff_U_.begin();
 
         int sink = LSAP::augment_k(
-            C, V, U, LV, V_diff_LV, u, v, row, pred, k);
+            C, V, SU, LV, V_diff_LV, u, v, row, pred, k);
         U_.insert(k);
 
         int i, h, j = sink;
@@ -114,10 +115,8 @@ std::vector<int> LSAP::hungarian_n3(matrix<int> C, int n)
         {
             i = pred[j];
             row[j] = i;
-            h = phi[i];
-            phi[i] = j;
-            j = h;
-        } while (i == k);
+            std::swap(phi[i], j);
+        } while (i != k);
     }
 
     return phi;
