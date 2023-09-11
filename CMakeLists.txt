@@ -21,6 +21,7 @@ set(sources
     src/Preprocess.cpp
     src/Utils.cpp
     src/Tests.cpp
+    src/test_suite.cpp
     )
 
 add_executable(LSAP ${headers} ${sources} main.cpp)
