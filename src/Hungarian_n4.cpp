@@ -33,7 +33,6 @@ int LSAP::alternate_k(
     bool fail = false;
 
     int sink = -1;
-
     int i = k;
 
     while (fail == false && sink == -1)
