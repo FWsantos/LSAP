@@ -39,6 +39,15 @@ public:
     // Generate phi vector from row vector.
     static std::vector<int> generate_phi(std::vector<int> row);
 
+    static int shortest_path(
+        matrix<int> C,
+        std::vector<int> V,
+        std::vector<int> u,
+        std::vector<int> v,
+        std::vector<int> row,
+        std::vector<int> &pred,
+        int k);
+
 private:
     static std::set<int> diff(std::set<int> A, std::set<int> B);
 };
