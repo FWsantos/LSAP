@@ -5,8 +5,11 @@
 
 matrix<int> Utils::read_file(std::string file_path, int &n)
 {
+<<<<<<< Updated upstream
     std::cout << "file_path: " << file_path << "\n\n";
 
+=======
+>>>>>>> Stashed changes
     std::ifstream file(file_path);
 
     if (!file.is_open())

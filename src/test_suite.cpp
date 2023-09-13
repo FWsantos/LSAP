@@ -7,6 +7,7 @@
 void Tests::assign_files()
 {
     int n;
+<<<<<<< Updated upstream
     for (int i = 1; i <= 1; i++)
     {
         std::string file_name = "assign" + std::to_string(i) + "00.txt";
@@ -14,6 +15,16 @@ void Tests::assign_files()
 
         // Utils::print_matrix(C);
         std::cout << "n = " << n << "\n";
+=======
+    std::cout << "Data file\tResult solution value\n";
+    for (int i = 1; i <= 1; i++)
+    {
+        std::string file_name = "assign" + std::to_string(i) + "00";
+        matrix<int> C = Utils::read_file("../file_inputs/" + file_name + ".txt", n);
+
+        // Utils::print_matrix(C);
+        // std::cout << "n = " << n << "\n";
+>>>>>>> Stashed changes
         std::vector<int> phi = LSAP::hungarian_n3(C, n);
 
         // Utils::print_vector(phi, "phi");
@@ -21,8 +32,15 @@ void Tests::assign_files()
         for (int i = 0; i < n; i++)
             result += C[i][phi[i]];
 
+<<<<<<< Updated upstream
         std::cout << "The result is: " << result << "\n\n";
 
         std::cout << file_name + " test end.\n";
     }
+=======
+        std::cout << file_name << "\t" << result << "\n";
+    }
+
+    std::cout << "\nTest end.\n";
+>>>>>>> Stashed changes
 }
