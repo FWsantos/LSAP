@@ -15,14 +15,17 @@ void Tests::assign_files()
 
         // Utils::print_matrix(C);
         // std::cout << "n = " << n << "\n";
-        std::vector<int> phi = LSAP::hungarian_n3(C, n);
+        std::vector<int> phi = LSAP::hungarian_sp(C, n);
 
-        // Utils::print_vector(phi, "phi");
-        int result = 0;
-        for (int i = 0; i < n; i++)
-            result += C[i][phi[i]];
+        Utils::print_vector(phi, "phi");
+        // int result = 0;
+        // std::cout << "phi = ";
+        // for (int i = 0; i < n; i++)
+        //     std::cout << phi[i] + ", ";
+        // std::cout << "\n\n";
+        // result += C[i][phi[i]];
 
-        std::cout << file_name << "\t" << result << "\n";
+        // std::cout << file_name << "\t" << result << "\n";
     }
 
     std::cout << "\nTest end.\n";

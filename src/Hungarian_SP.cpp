@@ -18,28 +18,28 @@ int LSAP::shortest_path(
     std::vector<int> pi(V.size(), int_max);
 
     std::set<int> SU, SV;
-    int sink = 0, delta = 0, i = k;
+    int sink = -1, delta = 0, i = k;
 
-    while (i == 0)
+    while (sink == -1)
     {
         SU.insert(i);
 
         std::set<int> V_diff_SV = diff(V, SV);
 
-        int arg_min = int_max;
+        int arg_min = *V_diff_SV.begin();
 
         for (const int &j : V_diff_SV)
         {
-            if (delta = C[i][j] - u[i] - v[j] < pi[j])
+            if ((delta + C[i][j] - u[i] - v[j]) < pi[j])
             {
                 pred[j] = i;
                 pi[j] = delta + C[i][j] - u[i] - v[j];
             }
 
             // Get min pi[j] , j => V/SV
-            if (pi[j] < arg_min)
+            if (pi[j] < pi[arg_min])
             {
-                arg_min = pi[j];
+                arg_min = j;
             }
         }
 
