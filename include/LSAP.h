@@ -41,12 +41,16 @@ public:
 
     static int shortest_path(
         matrix<int> C,
-        std::vector<int> V,
+        std::set<int> V,
         std::vector<int> u,
         std::vector<int> v,
         std::vector<int> row,
+        std::vector<int> phi,
         std::vector<int> &pred,
         int k);
+
+    /* Hungarian algorithm Shortest Path. */
+    static std::vector<int> hungarian_sp(matrix<int> C, int n);
 
 private:
     static std::set<int> diff(std::set<int> A, std::set<int> B);

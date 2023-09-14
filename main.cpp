@@ -9,7 +9,8 @@ int main(int argc, char const *argv[])
     // Tests::test_alternate_k();
     // Tests::hungarian_n4();
     // Tests::hungarian_n3();
-    Tests::assign_files();
+    // Tests::assign_files();
+    Tests::hungarian_sp();
 
     return 0;
 }

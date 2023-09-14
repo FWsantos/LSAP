@@ -149,3 +149,23 @@ void Tests::hungarian_n3()
 
     std::cout << "Hungarian function test end.\n";
 }
+
+void Tests::hungarian_sp()
+{
+    std::cout << "Hungarian function test begin...\n";
+    int n = 0;
+    // Initialize cost matrix C and get n
+    matrix<int> C = Utils::read_file(Tests::file_path, n);
+    Utils::print_matrix(C);
+
+    std::vector<int> phi = LSAP::hungarian_sp(C, n);
+
+    Utils::print_vector(phi, "phi");
+    int result = 0;
+    for (int i = 0; i < n; i++)
+        result += C[i][phi[i]];
+
+    std::cout << "The result is: " << result << "\n\n";
+
+    std::cout << "Hungarian function test end.\n";
+}
