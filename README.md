@@ -24,7 +24,7 @@ Example of how to build and run the project:
     cd LSAP
     mkdir build
     cd build
-    cmake -DBUILD_DIR=custom_build ..
+    cmake -DBUILD_DIR=build ..
     make
     ./LSAP
 
