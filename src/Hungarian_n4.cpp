@@ -1,5 +1,6 @@
 #include "../include/LSAP.h"
 #include "../include/Preprocess.h"
+#include <set>
 #include <algorithm>
 
 // define LSAP through a graph theory model. Define a bipartite
