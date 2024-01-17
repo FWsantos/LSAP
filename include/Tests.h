@@ -17,7 +17,6 @@ public:
     static void set_test();
     static void hungarian_n4();
     static void hungarian_n3();
-    static void hungarian_sp();
 
     // Test suite
     static void assign_files();

@@ -8,7 +8,6 @@ Hungarian Algorithm for Linear Sum Assignment problems, implemented in C++. The 
 - Preprocessing phase to determine a feasible dual solution and a partial primal solution
 - Hungarian algorithm $O(n^4)$
 - :exclamation: Hungarian algorithm $O(n^3)$
-- :exclamation: Hungarian algorithm $O(n^3)$ using shortest path
 
 **_NOTE:_**
 Items marked with :exclamation: have bugs or are not running correctly for larger instances.
