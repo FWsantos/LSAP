@@ -14,11 +14,10 @@ set(headers
     include/Types.h
     )
 
-set(sources
+set(sources 
     src/LSAP.cpp
     src/Hungarian_n4.cpp
     src/Hungarian_n3.cpp
-    src/Hungarian_SP.cpp
     src/Preprocess.cpp
     src/Utils.cpp
     src/Tests.cpp
